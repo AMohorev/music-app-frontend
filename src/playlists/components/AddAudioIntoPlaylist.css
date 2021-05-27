@@ -1,0 +1,17 @@
+.audio-row {
+    width: 50%;
+    color: white !important;
+}
+.audio-row h3{
+    font-size: 1rem;
+    color: white;
+    width: 80%;
+}
+
+@media (min-width: 768px) {
+    .audio-row h3{
+        font-size: 1.3rem;
+        color: white;
+        width: 70%;
+    }
+}

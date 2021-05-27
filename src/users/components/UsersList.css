@@ -1,0 +1,36 @@
+.user-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-row {
+    width: 50%;
+    color: white !important;
+    display: flex;
+    flex-direction: row;
+}
+.user-row h3{
+    font-size: 1rem;
+    color: white;
+    width: 80%;
+}
+
+.user-options form{
+    margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+    .user-options {
+        flex-direction: row;
+    }
+
+    .user-options form{
+        margin-top: 0;
+    }
+
+    .user-row h3{
+        font-size: 1.3rem;
+        color: white;
+        width: 60%;
+    }
+}

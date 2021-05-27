@@ -1,0 +1,9 @@
+.selected:hover {
+    color: #d32f2f !important;
+    border-bottom: #d32f2f 1px solid;
+}
+
+a.active {
+    color: #d32f2f !important;
+    border-bottom: #d32f2f 1px solid;
+}

@@ -1,0 +1,14 @@
+.authentication {
+    background: #262626;
+    border-radius: 5px;
+}
+
+.authentication .form-control {
+    margin: 1rem 0;
+    padding-bottom: 0.5rem;
+}
+
+.authentication button {
+    width: 100%;
+    margin: 0.5rem 0;
+}
