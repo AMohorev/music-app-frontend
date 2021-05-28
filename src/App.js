@@ -165,7 +165,7 @@ function App() {
                                     <MainNavigation />
                                     {routes}
                                 </div>
-                                <div
+                                {playlist[0].url !== "" && <div
                                     style={{ background: "#262626" }}
                                     className="col-12 mt-5"
                                 >
@@ -179,7 +179,7 @@ function App() {
                                             style={{ height: "300px", maxWidth: '100%' }}
                                         />
                                     </div>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                     </main>

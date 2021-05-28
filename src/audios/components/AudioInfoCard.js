@@ -138,7 +138,7 @@ const AudioInfoCard = (props) => {
                 <div className={"d-flex flex-column container-fluid mx-auto"}>
                     {comments.map((comment) => (
                         <Comment
-                            key={comment.id}
+                            key={comment._id}
                             item={comment}
                             audioId={props.id}
                         />

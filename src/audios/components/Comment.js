@@ -3,7 +3,6 @@ import React from "react";
 import "./Comment.css";
 
 const Comment = (props) => {
-
     return (
         <div className="container-fluid mb-3">
             <div className={"d-flex flex-column comment-block shadow-sm"}>
