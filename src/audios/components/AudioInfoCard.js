@@ -11,6 +11,7 @@ import { VALIDATOR_MINLENGTH } from "../../shared/util/validators";
 import { useForm } from "../../shared/hooks/form-hook";
 import "./AudioInfoCard.css";
 import ErrorModal from "../../shared/UI/ErrorModal";
+import Modal from "../../shared/UI/Modal";
 
 const AudioInfoCard = (props) => {
     const auth = useContext(AuthContext);
@@ -18,6 +19,10 @@ const AudioInfoCard = (props) => {
     const { error, sendRequest, clearError } = UseHttpClient();
     const history = useHistory();
     const [comments, setComments] = useState(props.comments);
+    const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
+
+    const showDeleteConfirmModalHandler = () => setConfirmDeleteModal(true);
+    const cancelDeleteHandler = () => setConfirmDeleteModal(false);
 
     const [formState, inputHandler] = useForm(
         {
@@ -50,8 +55,14 @@ const AudioInfoCard = (props) => {
                     Authorization: "Bearer " + auth.token,
                 }
             );
-            history.push("/audios");
         } catch (err) {}
+        setTrack({
+            url: "", //"http://localhost:5000/uploads/audios/hund.mp3",
+            cover: "http://localhost:5000/uploads/pictures/music.png",
+            title: "Choose track first",
+            artist: [],
+        });
+        history.push("/audios");
     };
 
     const postCommentHandler = async (event) => {
@@ -70,7 +81,7 @@ const AudioInfoCard = (props) => {
         );
         const newComments = Array.from(comments);
         newComments.push(responseData.comment);
-        setComments(newComments)
+        setComments(newComments);
     };
 
     const addLikedAudioHandler = async () => {
@@ -85,11 +96,23 @@ const AudioInfoCard = (props) => {
             );
             history.push("/audios");
         } catch (err) {}
-    }
+    };
 
     return (
         <React.Fragment>
             <ErrorModal error={error} onClear={clearError} />
+            <Modal
+                show={confirmDeleteModal}
+                onCancel={cancelDeleteHandler}
+                header="Are you sure?"
+                footer={
+                    <Button inverse onClick={deleteAudioHandler}>
+                        Delete
+                    </Button>
+                }
+            >
+                <p>Do you want to delete?</p>
+            </Modal>
             <div className={"d-flex flex-column mb-5"}>
                 <div className={"d-flex justify-content-between audio-info"}>
                     <div className={"audio-info__image"}>
@@ -121,14 +144,18 @@ const AudioInfoCard = (props) => {
                         "float-left-sm d-flex flex-row mt-3 option-buttons"
                     }
                 >
-                    {auth.token && <Button onClick={addLikedAudioHandler} danger>Like</Button>}
+                    {auth.token && (
+                        <Button onClick={addLikedAudioHandler} danger>
+                            Like
+                        </Button>
+                    )}
                     {auth.role === "admin" && (
                         <Button to={`/audios/${props.id}/edit`} inverse>
                             Edit
                         </Button>
                     )}
                     {auth.role === "admin" && (
-                        <Button inverse onClick={deleteAudioHandler}>
+                        <Button inverse onClick={showDeleteConfirmModalHandler}>
                             Delete
                         </Button>
                     )}
@@ -144,22 +171,26 @@ const AudioInfoCard = (props) => {
                         />
                     ))}
                 </div>
-                {auth.token && <div className="col-sm-4 container mx-auto authentication mt-5 pb-3">
-                    <form
-                        onSubmit={postCommentHandler}
-                        className="d-flex flex-column"
-                    >
-                        <Input
-                            id="text"
-                            element="textarea"
-                            label="Add comment"
-                            validators={[VALIDATOR_MINLENGTH(5)]}
-                            errorText="Comment length should be > 5"
-                            onInput={inputHandler}
-                        />
-                        <Button type="submit" disabled={!formState.isValid}>Add comment</Button>
-                    </form>
-                </div>}
+                {auth.token && (
+                    <div className="col-sm-4 container mx-auto authentication mt-5 pb-3">
+                        <form
+                            onSubmit={postCommentHandler}
+                            className="d-flex flex-column"
+                        >
+                            <Input
+                                id="text"
+                                element="textarea"
+                                label="Add comment"
+                                validators={[VALIDATOR_MINLENGTH(5)]}
+                                errorText="Comment length should be > 5"
+                                onInput={inputHandler}
+                            />
+                            <Button type="submit" disabled={!formState.isValid}>
+                                Add comment
+                            </Button>
+                        </form>
+                    </div>
+                )}
             </div>
         </React.Fragment>
     );

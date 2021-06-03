@@ -12,7 +12,7 @@ const ModalOverlay = (props) => {
                 <h2>{props.header}</h2>
             </header>
             <div className="modal__content">{props.children}</div>
-            <div className="modal__footer">
+            <div className="modal__footer d-flex flex-row justify-content-between">
                 <button
                     type="button"
                     className="btn btn-danger"
@@ -20,6 +20,7 @@ const ModalOverlay = (props) => {
                 >
                     Close
                 </button>
+                {props.footer}
             </div>
         </div>
     );

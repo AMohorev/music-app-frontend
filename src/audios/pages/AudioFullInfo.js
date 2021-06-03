@@ -15,10 +15,12 @@ const AudioFullInfo = (props) => {
 
     useEffect(() => {
         const fetchAudio = async () => {
-            const responseData = await sendRequest(
-                `http://localhost:5000/api/audios/${audioId}`
-            );
-            setFoundAudio(responseData.audio);
+            try {
+                const responseData = await sendRequest(
+                    `http://localhost:5000/api/audios/${audioId}`
+                );
+                setFoundAudio(responseData.audio);
+            } catch (err) {}
         };
         fetchAudio();
     }, [audioId, sendRequest]);
@@ -35,9 +37,14 @@ const AudioFullInfo = (props) => {
 
     let content;
     if (allowed == 10) {
-        content = <div className="container mt-5">
-            <h1 style={{color: "#d32f2f", textAlign: "center"}}>You have reached limit of 10 songs. Register or login to listen more</h1>
-        </div>;
+        content = (
+            <div className="container mt-5">
+                <h1 style={{ color: "#d32f2f", textAlign: "center" }}>
+                    You have reached limit of 10 songs. Register or login to
+                    listen more
+                </h1>
+            </div>
+        );
     } else {
         content = (
             <React.Fragment>

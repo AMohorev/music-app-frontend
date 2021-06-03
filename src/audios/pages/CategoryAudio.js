@@ -6,6 +6,7 @@ import AudiosList from "../components/AudiosList";
 import Button from "../../shared/UI/Button";
 import { AuthContext } from "../../shared/context/auth-context";
 import ErrorModal from "../../shared/UI/ErrorModal";
+import Modal from "../../shared/UI/Modal";
 
 const CategoryAudio = (props) => {
     const [loadedAudios, setLoadedAudios] = useState();
@@ -14,6 +15,10 @@ const CategoryAudio = (props) => {
     const { error, sendRequest, clearError } = UseHttpClient();
     const auth = useContext(AuthContext);
     const history = useHistory();
+    const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
+
+    const showDeleteConfirmModalHandler = () => setConfirmDeleteModal(true);
+    const cancelDeleteHandler = () => setConfirmDeleteModal(false);
 
     useEffect(() => {
         const fetchAudios = async () => {
@@ -46,7 +51,19 @@ const CategoryAudio = (props) => {
 
     return (
         <div className="mt-5 container">
-            <ErrorModal error={error} onClear={clearError}/>
+            <ErrorModal error={error} onClear={clearError} />
+            <Modal
+                show={confirmDeleteModal}
+                onCancel={cancelDeleteHandler}
+                header="Are you sure?"
+                footer={
+                    <Button inverse onClick={deleteCategoryHandler}>
+                        Delete
+                    </Button>
+                }
+            >
+                <p>Do you want to delete?</p>
+            </Modal>
             {loadedAudios && (
                 <div className="col text-center container-fluid center-block">
                     <div className="mx-auto">
@@ -79,7 +96,10 @@ const CategoryAudio = (props) => {
                                 >
                                     Add track
                                 </Button>
-                                <Button inverse onClick={deleteCategoryHandler}>
+                                <Button
+                                    inverse
+                                    onClick={showDeleteConfirmModalHandler}
+                                >
                                     Delete
                                 </Button>
                             </div>

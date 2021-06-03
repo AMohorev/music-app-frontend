@@ -31,7 +31,7 @@ function App() {
 
     const [playlist, setPlaylist] = useState([
         {
-            url: "", //"http://localhost:5000/uploads/audios/hund.mp3",
+            url: "",
             cover: "http://localhost:5000/uploads/pictures/music.png",
             title: "Choose track first",
             artist: [],

@@ -6,14 +6,18 @@ import AudiosList from "../../audios/components/AudiosList";
 import { AuthContext } from "../../shared/context/auth-context";
 import ErrorModal from "../../shared/UI/ErrorModal";
 import Button from "../../shared/UI/Button";
+import Modal from "../../shared/UI/Modal";
 
 const PlaylistAudio = (props) => {
     const [loadedAudios, setLoadedAudios] = useState();
     const auth = useContext(AuthContext);
     const { playlistId } = useParams();
     const history = useHistory();
-
     const { error, sendRequest, clearError } = UseHttpClient();
+    const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
+
+    const showDeleteConfirmModalHandler = () => setConfirmDeleteModal(true);
+    const cancelDeleteHandler = () => setConfirmDeleteModal(false);
 
     useEffect(() => {
         try {
@@ -49,6 +53,18 @@ const PlaylistAudio = (props) => {
     return (
         <React.Fragment>
             <ErrorModal error={error} onClear={clearError} />
+            <Modal
+                show={confirmDeleteModal}
+                onCancel={cancelDeleteHandler}
+                header="Are you sure?"
+                footer={
+                    <Button inverse onClick={deletePlaylistHandler}>
+                        Delete
+                    </Button>
+                }
+            >
+                <p>Do you want to delete?</p>
+            </Modal>
             <div className="mt-5">
                 {loadedAudios && (
                     <div className="col text-center container">
@@ -78,7 +94,10 @@ const PlaylistAudio = (props) => {
                             Add track
                         </Button>
                         {loadedAudios.playlistName != "Liked" && (
-                            <Button inverse onClick={deletePlaylistHandler}>
+                            <Button
+                                inverse
+                                onClick={showDeleteConfirmModalHandler}
+                            >
                                 Delete
                             </Button>
                         )}
